@@ -23,7 +23,7 @@ CH8			UV lights
 DURIP computer static IP address: 169.254.20.100 Mask 255.255.0.0
 THOR computer Static IP address: 169.254.20.5 Mask 255.255.255.0
 cDAQ Static IP Address eth0: 169.254.20.212 Mask 255.255.0.0
-cDAQ Static IP Address eth1 (USB): 
+cDAQ Static IP Address eth1 (USB): 169.254.190.91
 RaspberryPi Static IP Address: 169.254.20.99 Mask
 cDAQ shutdown command: shutdown -h -P now
 
