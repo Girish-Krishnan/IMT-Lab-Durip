@@ -264,5 +264,7 @@ def main():
     else:
         parser.print_help()
 
+    save_to_storage(sensors_schedule, sensors_override, sensors_indices)
+
 if __name__ == "__main__":
     main()

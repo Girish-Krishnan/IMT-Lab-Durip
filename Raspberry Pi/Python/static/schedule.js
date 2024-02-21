@@ -32,32 +32,6 @@
             executeCommand('remove', `${sensor},${index}`);
         }
 
-        async function viewSchedules() {
-            const response = await fetch('/view_schedules', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-            const schedules = await response.json();
-            displaySchedules(schedules);
-        }
-    
-        function displaySchedules(schedules) {
-            const resultDiv = document.getElementById('result');
-            resultDiv.innerHTML = ''; // Clear previous content
-            for (const [sensor, sensorSchedules] of Object.entries(schedules)) {
-                const sensorDiv = document.createElement('div');
-                sensorDiv.innerHTML = `<h3>${sensor}</h3>`;
-                sensorSchedules.forEach(schedule => {
-                    const scheduleDiv = document.createElement('div');
-                    scheduleDiv.textContent = `Start: ${schedule.start}, End: ${schedule.end}, State: ${schedule.state}, Repeat: ${schedule.repeat}`;
-                    sensorDiv.appendChild(scheduleDiv);
-                });
-                resultDiv.appendChild(sensorDiv);
-            }
-        }
-
         function overrideSensor(event) {
             event.preventDefault();
             const form = event.target;
