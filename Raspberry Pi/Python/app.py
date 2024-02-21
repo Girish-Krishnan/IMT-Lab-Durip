@@ -26,7 +26,7 @@ async def execute_command(command: str = Form(...), args: str = Form(...)):
 @app.get("/view_schedules")
 async def view_schedules():
     result = run_sensor_schedule_command(['view'])
-    raise NotImplementedError
+    return HTMLResponse(content=result, status_code=200)
     
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -45,3 +45,10 @@
             const sensor = event.target.sensor.value;
             executeCommand('remove_override', sensor);
         }
+
+        function viewSchedules() {
+            fetch('/view_schedules').then(response => response.text()).then(text => {
+                document.getElementById('result').textContent = text;
+            }
+            );
+        }
