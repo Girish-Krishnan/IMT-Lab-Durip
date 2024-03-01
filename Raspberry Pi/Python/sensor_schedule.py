@@ -112,6 +112,11 @@ def add_schedule(args):
                 cron_dates = end_repeat.strftime('%d')
                 cron_months = end_repeat.strftime('%m')
                 cron_days = end_repeat.isoweekday()
+
+            start_time_cron = f"{start_minutes} {start_hours} {cron_dates} {cron_months} {cron_days}"
+            end_time_cron = f"{end_minutes} {end_hours} {cron_dates} {cron_months} {cron_days}"
+            add_crontab_job(sensor, state, start_time_cron, start_tag)
+            add_crontab_job(sensor, 'off', end_time_cron, end_tag)
         else:
             # Weekly or custom with specified days
             if days:
