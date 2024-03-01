@@ -186,7 +186,11 @@ def override_sensor(args):
             job.enable(False)
 
         # Add a temporary override job
-        command = f'python change_sensor_state.py {sensor} {state}'
+        if state == 'logging':
+            command = f'echo \"Sensor {sensor} is now logging\" && python LogSerialData.py'
+        else:
+            command = f'echo \"Sensor {sensor} is now overridden to state {state}\" && /home/admin/8mosfet-rpi/8mosfet 0 write {sensors_channels[sensor]} {state}'
+
         # Assuming override is immediate, no specific time provided, runs every minute
         job = cron.new(command=command, comment=f"override_{sensor}")
         job.setall("* * * * *")  # Every minute; adjust if you need less frequency
