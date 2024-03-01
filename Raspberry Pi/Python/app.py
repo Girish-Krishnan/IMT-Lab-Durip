@@ -18,8 +18,11 @@ async def read_root():
     return HTMLResponse(content=open("static/index.html", "r").read(), status_code=200)
 
 @app.post("/execute")
-async def execute_command(command: str = Form(...), args: str = Form(...)):
+async def execute_command(input_value: dict):
+    command = input_value["command"]
+    args = input_value["args"]
     args_list = args.split(',') if args else []
+    print(f"Command: {command}, Args: {args_list}")
     result = run_sensor_schedule_command([command] + args_list)
     return result
 

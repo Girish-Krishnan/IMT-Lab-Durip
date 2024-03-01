@@ -168,7 +168,7 @@ def view_states(args):
     """Displays the states and overrides of all sensors."""
     for sensor, state in sensors_state.items():
         override = sensors_override[sensor]
-        state_str = f"{state}{' (overridden)' if override is not None else ''}"
+        state_str = f"{state}{f' (OVERRIDE: {override})' if override is not None else ''}"
         print(f"Sensor {sensor}: {state_str}")
 
 def override_sensor(args):

@@ -4,10 +4,11 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ command, args }),
+                body: JSON.stringify({ 
+                    "command": command, 
+                    "args": args }),
             });
             const result = await response.text();
-            document.getElementById('result').textContent = result;
         }
 
         function addSchedule(event) {
