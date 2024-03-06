@@ -23,6 +23,7 @@
             const endRepeat = form.endRepeat.value;
             const args = [sensor, start, end, state, repeat, days, endRepeat].filter(arg => arg !== '').join(',');
             executeCommand('add', args);
+            viewSchedules();
         }
 
         function removeSchedule(event) {
@@ -31,6 +32,7 @@
             const sensor = form.sensor.value;
             const index = form.index.value;
             executeCommand('remove', `${sensor},${index}`);
+            viewSchedules();
         }
 
         function overrideSensor(event) {
@@ -39,12 +41,14 @@
             const sensor = form.sensor.value;
             const state = form.state.value;
             executeCommand('override', `${sensor},${state}`);
+            viewSchedules();
         }
 
         function removeOverride(event) {
             event.preventDefault();
             const sensor = event.target.sensor.value;
             executeCommand('remove_override', sensor);
+            viewSchedules();
         }
 
         function viewSchedules() {

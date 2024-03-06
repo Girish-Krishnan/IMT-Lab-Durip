@@ -169,12 +169,25 @@ def view_schedules(args):
         for i, schedule in enumerate(schedules):
             print(f"  {i}: Start: {schedule['start']}, End: {schedule['end']}, Repeat: {schedule['repeat']}")
 
-def view_states(args):
-    """Displays the states and overrides of all sensors."""
-    for sensor, state in sensors_state.items():
-        override = sensors_override[sensor]
-        state_str = f"{state}{f' (OVERRIDE: {override})' if override is not None else ''}"
-        print(f"Sensor {sensor}: {state_str}")
+# def view_states(args):
+#     """Displays the states and overrides of all sensors."""
+#     current_time = datetime.datetime.now()
+#     for sensor, state in sensors_state.items():
+#         override = sensors_override[sensor]
+#         state_str = f"{state}{f' (OVERRIDE: {override})' if override is not None else ''}"
+#         print(f"Sensor {sensor}: {state_str}")
+
+#         # Get the updated state based on the sensor's schedule and current time
+#         for schedule in sensors_schedule[sensor]:
+#             start_time = 
+#             end_time = parse_date(schedule['end'])
+#             repeat_days = parse_days(schedule['repeat'])
+#             if start_time <= current_time <= end_time and current_time.strftime('%A') in repeat_days:
+#                 sensors_state[sensor] = schedule["state"]
+#                 break
+
+#     # Save the updated states to storage
+#     save_to_storage(sensors_schedule, sensors_override, sensors_indices)
 
 def override_sensor(args):
     """Overrides the state of one or more sensors and manages crontab jobs accordingly."""
@@ -264,8 +277,8 @@ def main():
     elif args.command == 'view':
         print("Schedules:")
         view_schedules(args)
-        print("States:")
-        view_states(args)
+        #print("States:")
+        #view_states(args)
     elif args.command == 'override':
         override_sensor(args)
     elif args.command == 'remove_override':
