@@ -42,6 +42,7 @@
             const state = form.state.value;
             executeCommand('override', `${sensor},${state}`);
             viewSchedules();
+            viewStates();
         }
 
         function removeOverride(event) {
@@ -49,6 +50,7 @@
             const sensor = event.target.sensor.value;
             executeCommand('remove_override', sensor);
             viewSchedules();
+            viewStates();
         }
 
         function viewSchedules() {
@@ -57,3 +59,52 @@
             }
             );
         }
+
+        function viewStates() {
+            fetch('/view_states').then(response => response.text()).then(text => {
+                document.getElementById('current').textContent = text;
+            }
+            );
+        }
+
+        setInterval(viewStates, 2000);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            viewSchedules();
+            viewStates();
+
+            document.getElementById('uploadForm').onsubmit = async function(event) {
+                event.preventDefault(); // Prevent the form from submitting the traditional way
+        
+                const fileInput = document.getElementById('jsonFile');
+                const file = fileInput.files[0];
+        
+                if (!file || file.type !== "application/json") {
+                    alert("Please select a valid JSON file.");
+                    return;
+                }
+        
+                try {
+                    const text = await file.text();
+                    JSON.parse(text); // Try parsing the file text as JSON
+        
+                    // If parsing succeeds, submit the form data using Fetch API or handle the file as needed
+                    const formData = new FormData();
+                    formData.append("file", file);
+        
+                    const response = await fetch('/upload_schedule/', {
+                        method: 'POST',
+                        body: formData,
+                    });
+        
+                    if (response.ok) {
+                        alert("File uploaded successfully!");
+                    } else {
+                        alert("Failed to upload the file.");
+                    }
+                } catch (error) {
+                    // If parsing fails, it's not a valid JSON file
+                    alert("The file is not a valid JSON.");
+                }
+            };
+        });

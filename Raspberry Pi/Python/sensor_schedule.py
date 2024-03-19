@@ -141,6 +141,7 @@ def remove_schedule(args):
     if schedule_index < sensors_indices[sensor] + 1:
         # Remove the schedule
         for i, schedule in enumerate(sensors_schedule[sensor]):
+            print(schedule)
             if schedule['id'] == schedule_index:
                 sensors_schedule[sensor].pop(i)
 
@@ -165,29 +166,35 @@ def remove_schedule(args):
 def view_schedules(args):
     """Displays the schedules of all sensors."""
     for sensor, schedules in sensors_schedule.items():
-        print(f"Sensor {sensor}:")
+        if sensors_override[sensor] is not None:
+            override = f" (OVERRIDE: {sensors_override[sensor]})"
+        else:
+            override = ""
+        print(f"{sensor}{override} Schedules:")
         for i, schedule in enumerate(schedules):
-            print(f"  {i}: Start: {schedule['start']}, End: {schedule['end']}, Repeat: {schedule['repeat']}")
+            print(f"{schedule['id']}: Start: {schedule['start']}, End: {schedule['end']}, Repeat: {schedule['repeat']}")
+        print("")
 
-# def view_states(args):
-#     """Displays the states and overrides of all sensors."""
-#     current_time = datetime.datetime.now()
-#     for sensor, state in sensors_state.items():
-#         override = sensors_override[sensor]
-#         state_str = f"{state}{f' (OVERRIDE: {override})' if override is not None else ''}"
-#         print(f"Sensor {sensor}: {state_str}")
+def view_states(args):
+    """Displays the states and overrides of all sensors."""
+    # Note: this should be done based on the current time, and whatever is in the crontab
 
-#         # Get the updated state based on the sensor's schedule and current time
-#         for schedule in sensors_schedule[sensor]:
-#             start_time = 
-#             end_time = parse_date(schedule['end'])
-#             repeat_days = parse_days(schedule['repeat'])
-#             if start_time <= current_time <= end_time and current_time.strftime('%A') in repeat_days:
-#                 sensors_state[sensor] = schedule["state"]
-#                 break
+    for sensor, state in sensors_state.items():
+        if sensors_override[sensor] is not None:
+            print(f"{sensor}: {sensors_override[sensor]} (OVERRIDE)")
+        else:
+            current_time = datetime.datetime.now().time()   
+            found = False
+            for schedule in sensors_schedule[sensor]:
+                start_time = datetime.datetime.strptime(schedule['start'], "%H:%M").time()
+                end_time = datetime.datetime.strptime(schedule['end'], "%H:%M").time()
+                if start_time <= current_time <= end_time:
+                    print(f"{sensor}: {schedule['state']} (SCHEDULED)")
+                    found = True
+                    break
 
-#     # Save the updated states to storage
-#     save_to_storage(sensors_schedule, sensors_override, sensors_indices)
+            if not found:
+                print(f"{sensor}: off")
 
 def override_sensor(args):
     """Overrides the state of one or more sensors and manages crontab jobs accordingly."""
@@ -258,6 +265,7 @@ def main():
 
     # Subparser for viewing schedules
     parser_view = subparsers.add_parser('view', help='View all schedules')
+    parser_states = subparsers.add_parser('view_states', help='View all states')
 
     # Subparser for overriding a sensor now includes 'logging' in the choices
     parser_override = subparsers.add_parser('override', help='Override a sensor on, off, or to logging')
@@ -275,14 +283,13 @@ def main():
     elif args.command == 'remove':
         remove_schedule(args)
     elif args.command == 'view':
-        print("Schedules:")
         view_schedules(args)
-        #print("States:")
-        #view_states(args)
     elif args.command == 'override':
         override_sensor(args)
     elif args.command == 'remove_override':
         remove_override(args)
+    elif args.command == 'view_states':
+        view_states(args)
     else:
         parser.print_help()
 
