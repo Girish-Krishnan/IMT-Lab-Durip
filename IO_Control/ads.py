@@ -5,6 +5,9 @@ import busio
 from adafruit_ads1x15.ads1015 import ADS1015
 from adafruit_ads1x15.analog_in import AnalogIn
 
+RATIO = 24 / 2.17 # volts / volts
+# i.e. 24V is represented as 2.17V
+
 # Initialize I2C bus
 i2c = busio.I2C(board.SCL, board.SDA)
 
@@ -20,12 +23,12 @@ try:
     while True:
         print("ADS1015 #1 (0x48) readings:")
         for i, ch in enumerate(ads1_channels):
-            voltage = ch.voltage
+            voltage = ch.voltage * RATIO
             print(f"  Channel {i}: {voltage:.3f} V")
 
         print("ADS1015 #2 (0x49) readings:")
         for i, ch in enumerate(ads2_channels):
-            voltage = ch.voltage
+            voltage = ch.voltage * RATIO
             print(f"  Channel {i}: {voltage:.3f} V")
 
         print("\n--- Waiting 1 second ---\n")
