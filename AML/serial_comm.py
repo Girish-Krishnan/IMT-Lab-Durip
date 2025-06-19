@@ -2,7 +2,7 @@ import serial
 import time
 
 # Serial port settings
-serialPort = '/dev/tty.usbserial-FT9EJUFK0'
+serialPort = '/dev/tty.usbserial-FT4YCM0W'
 baudRate = 38400
 logFilePath = 'AML.txt'
 
