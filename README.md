@@ -1,6 +1,9 @@
 # IMT-Lab-Durip
 All the code and documentation for the Durip Project at the SIO IMT Lab
 
+> **Note**
+> This repository is archived and no longer actively maintained. To keep things better organized, the code and documentation have been moved to the [DURIP](https://github.com/SIO-IMT-Lab/DURIP) repository on the official SIO IMT Lab GitHub page.
+
 ## Task list
 
 * [DONE] Create a Labview executable that runs on startup
